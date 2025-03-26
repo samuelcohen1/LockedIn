@@ -1,0 +1,12 @@
+{
+  "name": "lockedin",
+  "version": "1.0.0",
+  "description": "A Chrome web extension that blocks unproductive websites using AI.",
+  "main": "background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
