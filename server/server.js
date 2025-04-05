@@ -98,17 +98,58 @@ app.get('/auth/google/callback',
     (req, res) => {
         const token = jwt.sign(
             { id: req.user.id, username: req.user.username },
-            process.env.JWT_SECRET,
+            process.env.JWT_SECRET || 'default_secret',
             { expiresIn: '1h' }
         );
 
-
-        // Send token data to background.js instead of redirecting directly
+        // Send an HTML page that will safely communicate with the extension
         res.send(`
-            <script>
-                chrome.runtime.sendMessage('${process.env.EXTENSION_ID}', { token: '${token}' });
-                window.close();
-            </script>
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Authentication Success</title>
+                <style>
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        height: 100vh;
+                        margin: 0;
+                        background-color: #f8f9fa;
+                    }
+                    .message {
+                        background: white;
+                        padding: 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        text-align: center;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="message">
+                    <h2>Authentication Successful!</h2>
+                    <p>You can close this window and return to the extension.</p>
+                </div>
+                <script>
+                    // Send token to extension
+                    const token = "${token}";
+                    chrome.runtime.sendMessage("${process.env.EXTENSION_ID}", { token }, 
+                        function(response) {
+                            if (chrome.runtime.lastError) {
+                                console.log("Error sending message:", chrome.runtime.lastError);
+                            } else {
+                                console.log("Message sent successfully");
+                            }
+                            // Close the window after a short delay
+                            setTimeout(() => window.close(), 2000);
+                        }
+                    );
+                </script>
+            </body>
+            </html>
         `);
     }
 );
