@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "My First Chrome Extension",
+  "name": "LockedIn",
   "version": "1.0",
   "description": "A basic Chrome extension",
   "action": {

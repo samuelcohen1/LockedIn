@@ -1,3 +1,35 @@
+// New Gemini API request logic
+document.getElementById("geminiRequest").addEventListener("click", async () => {
+    const statusElement = document.getElementById("geminiResponse");
+    statusElement.innerText = "Making request to Gemini API...";
+
+    try {
+        const response = await fetch("http://localhost:3000/api/gemini", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ prompt: "Tell me a fact abou rocks" }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        statusElement.innerText = `Gemini API Response: ${JSON.stringify(result)}`;
+    } catch (error) {
+        statusElement.innerText = `Error: ${error.message}`;
+    }
+});
+
+
+
+
+
+
+
+
 document.getElementById("googleSignIn").addEventListener("click", () => {
     chrome.tabs.create({ url: "http://localhost:3000/auth/google" });
 });
