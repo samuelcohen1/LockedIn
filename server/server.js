@@ -143,6 +143,10 @@ app.post("/api/gemini", async (req, res) => {
 
 // Route for analyzing tab and storing activity by userID (no JWT)
 app.post("/api/analyze-tab", async (req, res) => {
+    console.log("Received request to /api/analyze-tab:", req.body); // Log the request body
+
+        // chrome.action.openPopup();
+
   const { url, title, userID } = req.body;
 
   if (!url || !title || !userID) {
