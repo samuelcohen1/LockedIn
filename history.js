@@ -30,9 +30,16 @@ window.addEventListener('DOMContentLoaded', async () => {
                     return true;
                 });
                 if (filtered.length > 0) {
-                    historyTableBody.innerHTML = filtered.map(item =>
-                      `<tr><td><a href="${item.url}" target="_blank">${item.url}</a></td><td><span class="prod-label ${item.classification}">${item.classification ? item.classification.charAt(0).toUpperCase() + item.classification.slice(1) : ''}</span></td></tr>`
-                    ).join('');
+                    historyTableBody.innerHTML = filtered.map(item => {
+                        let displayDomain = '';
+                        try {
+                            const urlObj = new URL(item.url);
+                            displayDomain = urlObj.hostname.replace(/^www\./, '');
+                        } catch (e) {
+                            displayDomain = item.url;
+                        }
+                        return `<tr><td><a href="${item.url}" target="_blank">${displayDomain}</a></td><td><span class="prod-label ${item.classification}">${item.classification ? item.classification.charAt(0).toUpperCase() + item.classification.slice(1) : ''}</span></td></tr>`;
+                    }).join('');
                 } else {
                     historyTableBody.innerHTML = '<tr><td colspan="2">No history found.</td></tr>';
                 }
