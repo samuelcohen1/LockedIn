@@ -1,10 +1,10 @@
 // Fetch and display tab history URLs
 window.addEventListener('DOMContentLoaded', async () => {
-    const historyList = document.getElementById('historyList');
+    const historyTableBody = document.getElementById('historyTableBody');
     // Get token from chrome.storage.local
     chrome.storage.local.get('token', async (result) => {
         if (!result.token) {
-            historyList.innerHTML = '<li style="color:red">Not logged in.</li>';
+            historyTableBody.innerHTML = '<tr><td colspan="2" style="color:red">Not logged in.</td></tr>';
             return;
         }
         try {
@@ -15,11 +15,11 @@ window.addEventListener('DOMContentLoaded', async () => {
                 }
             });
             const data = await response.json();
-            if (data.urls && Array.isArray(data.urls) && data.urls.length > 0) {
+            if (data.history && Array.isArray(data.history) && data.history.length > 0) {
                 // Filter out unwanted URLs
-                const filtered = data.urls.filter(url => {
-                    if (!url) return false;
-                    const lower = url.toLowerCase();
+                const filtered = data.history.filter(item => {
+                    if (!item.url) return false;
+                    const lower = item.url.toLowerCase();
                     if (
                         lower.includes('auth/google') ||
                         lower.includes('authentication') ||
@@ -30,17 +30,17 @@ window.addEventListener('DOMContentLoaded', async () => {
                     return true;
                 });
                 if (filtered.length > 0) {
-                    historyList.innerHTML = filtered.map(url =>
-                      `<li><span class="icon"></span><a href="${url}" target="_blank">${url}</a></li>`
+                    historyTableBody.innerHTML = filtered.map(item =>
+                      `<tr><td><a href="${item.url}" target="_blank">${item.url}</a></td><td><span class="prod-label ${item.classification}">${item.classification ? item.classification.charAt(0).toUpperCase() + item.classification.slice(1) : ''}</span></td></tr>`
                     ).join('');
                 } else {
-                    historyList.innerHTML = '<li>No history found.</li>';
+                    historyTableBody.innerHTML = '<tr><td colspan="2">No history found.</td></tr>';
                 }
             } else {
-                historyList.innerHTML = '<li>No history found.</li>';
+                historyTableBody.innerHTML = '<tr><td colspan="2">No history found.</td></tr>';
             }
         } catch (err) {
-            historyList.innerHTML = '<li style="color:red">Failed to load history.</li>';
+            historyTableBody.innerHTML = '<tr><td colspan="2" style="color:red">Failed to load history.</td></tr>';
         }
     });
 });

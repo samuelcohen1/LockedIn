@@ -2,16 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=320,initial-scale=1">
     <title>LockedIn - Google Sign In</title>
     <link rel="stylesheet" href="popup.css">
     <script src="popup.js" defer></script>
+    <style>
+      html, body {
+        width: 320px !important;
+        min-width: 320px !important;
+        max-width: 320px !important;
+        overflow-x: hidden;
+      }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>LockedIn</h1>
         <button id="googleSignIn">Sign in with Google</button>
         <button id="logoutButton" style="display: none;">Sign Out</button>
-        <button id="historyButton">View History</button>
+        <button id="historyButton"><span class="icon"></span>View History</button>
         <p id="status"></p>
         <p id="tab-productivity">Waiting for tab info...</p>
 

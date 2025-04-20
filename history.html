@@ -5,26 +5,31 @@
     <title>Tab History</title>
     <link rel="stylesheet" href="popup.css">
     <style>
-      .history-list {
+      .history-table {
         margin-top: 20px;
-        padding-left: 0;
-        list-style: none;
       }
-      .history-list li {
-        margin-bottom: 10px;
+      .history-table th {
+        text-align: left;
+      }
+      .history-table td {
         word-break: break-all;
-      }
-      .history-list a {
-        color: #1a73e8;
-        text-decoration: underline;
       }
     </style>
     <script defer src="history.js"></script>
 </head>
-<body>
-    <div class="container">
-        <h1>Tab History</h1>
-        <ul id="historyList" class="history-list"></ul>
+<body class="history-page">
+    <div class="container history-container">
+        <h1><span class="history-icon"></span>Tab History</h1>
+        <p class="history-description">See all your recent tabs and their productivity levels. Click a URL to revisit it.</p>
+        <table id="historyTable" class="history-table">
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>Productivity</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody"></tbody>
+        </table>
     </div>
 </body>
 </html>
