@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const fetch = require("node-fetch");
 const dotenv = require("dotenv");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const buildPrompt = require("./prompt");
 
 dotenv.config();
 
@@ -53,13 +54,20 @@ const authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith("Bearer ")) {
     const token = authHeader.split(" ")[1];
-    jwt.verify(token, process.env.JWT_SECRET || "default_secret", (err, user) => {
-      if (err) return res.status(403).json({ error: "Invalid or expired token" });
-      req.user = user;
-      next();
-    });
+    jwt.verify(
+      token,
+      process.env.JWT_SECRET || "default_secret",
+      (err, user) => {
+        if (err)
+          return res.status(403).json({ error: "Invalid or expired token" });
+        req.user = user;
+        next();
+      }
+    );
   } else {
-    res.status(401).json({ error: "Authorization header missing or malformed" });
+    res
+      .status(401)
+      .json({ error: "Authorization header missing or malformed" });
   }
 };
 
@@ -101,9 +109,13 @@ passport.deserializeUser(async (id, done) => {
 });
 
 // Auth Routes
-app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 
-app.get("/auth/google/callback",
+app.get(
+  "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
     const token = jwt.sign(
@@ -180,7 +192,9 @@ app.post("/api/analyze-tab", authenticateJWT, async (req, res) => {
     return res.status(400).json({ error: "Missing URL or title." });
   }
 
-  const prompt = `A student is trying to stay productive while studying. They visit a website titled "${title}" at ${url}. Is this website productive, neutral, or unproductive? Respond with only one word and no new lines.`;
+  // const prompt = `A student is trying to stay productive while studying. They visit a website titled "${title}" at ${url}.
+  // Is this website productive, neutral, or unproductive? Respond with only one word and no new lines.`;
+  const prompt = buildPrompt({ title: title, url: url });
 
   try {
     const geminiRes = await fetch("http://localhost:3000/api/gemini", {
@@ -194,7 +208,12 @@ app.post("/api/analyze-tab", authenticateJWT, async (req, res) => {
     const user = await User.findById(userID);
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    user.activity.push({ url, title, classification: geminiResponse, timestamp: new Date() });
+    user.activity.push({
+      url,
+      title,
+      classification: geminiResponse,
+      timestamp: new Date(),
+    });
     await user.save();
 
     res.json({ classification: geminiResponse });
@@ -209,4 +228,6 @@ app.get("/", (req, res) => {
   res.send("✅ Server is running successfully!");
 });
 
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`🚀 Server running on http://localhost:${PORT}`)
+);
