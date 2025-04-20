@@ -2,11 +2,10 @@
 function updateLoginStatus() {
     chrome.storage.local.get("token", (result) => {
         console.log("Checking token status:", result);
-        const statusElement = document.getElementById("status");
         const signInButton = document.getElementById("googleSignIn");
         const logoutButton = document.getElementById("logoutButton");
         const tabProductivity = document.getElementById("tab-productivity");
-
+        const historyButton = document.getElementById("historyButton");
 
         if (result.token) {
             console.log("Token found:", result.token);
@@ -14,12 +13,14 @@ function updateLoginStatus() {
             signInButton.style.display = "none";
             tabProductivity.style.display = "flex";
             logoutButton.style.display = "flex";
+            historyButton.style.display = "flex";
         } else {
             console.log("No token found");
             // statusElement.innerText = "❌ Not logged in.";
             signInButton.style.display = "flex";
             tabProductivity.style.display = "none";
             logoutButton.style.display = "none";
+            historyButton.style.display = "none";
         }
     });
 }
@@ -60,12 +61,20 @@ document.getElementById("googleSignIn").addEventListener("click", () => {
     });
 });
 
-// Event Listener for Logout
-document.getElementById("logoutButton").addEventListener("click", handleLogout);
-
-// Check login status when popup opens
-console.log("Popup opened, checking initial status");
-document.addEventListener('DOMContentLoaded', updateLoginStatus);
+// Check login status and set up event listeners when popup opens
+document.addEventListener('DOMContentLoaded', () => {
+    updateLoginStatus();
+    const logoutButton = document.getElementById("logoutButton");
+    if (logoutButton) {
+        logoutButton.addEventListener("click", handleLogout);
+    }
+    const historyButton = document.getElementById("historyButton");
+    if (historyButton) {
+        historyButton.addEventListener("click", () => {
+            chrome.tabs.create({ url: chrome.runtime.getURL("history.html") });
+        });
+    }
+});
 
 // Listen for token updates from background script
 chrome.runtime.onMessage.addListener((message) => {
@@ -74,7 +83,6 @@ chrome.runtime.onMessage.addListener((message) => {
         updateLoginStatus();
     }
 });
-
 
 // Listen for messages from the background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

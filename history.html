@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tab History</title>
+    <link rel="stylesheet" href="popup.css">
+    <style>
+      .history-table {
+        margin-top: 20px;
+      }
+      .history-table th {
+        text-align: left;
+      }
+      .history-table td {
+        word-break: break-all;
+      }
+    </style>
+    <script defer src="history.js"></script>
+</head>
+<body class="history-page">
+    <div class="container history-container">
+        <h1><span class="history-icon"></span>Tab History</h1>
+        <p class="history-description">See all your recent tabs and their productivity levels. Click a URL to revisit it.</p>
+        <table id="historyTable" class="history-table">
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>Productivity</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody"></tbody>
+        </table>
+    </div>
+</body>
+</html>

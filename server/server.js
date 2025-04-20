@@ -223,6 +223,26 @@ app.post("/api/analyze-tab", authenticateJWT, async (req, res) => {
   }
 });
 
+// Get Tab History (URLs and productivity)
+app.get("/api/history", authenticateJWT, async (req, res) => {
+  try {
+    const userID = req.user.id;
+    const user = await User.findById(userID);
+    if (!user) return res.status(404).json({ error: "User not found" });
+    // Map url and classification fields from each activity object
+    const history = (user.activity || [])
+      .filter(item => item && item.url)
+      .map(item => ({
+        url: item.url,
+        classification: item.classification
+      }));
+    res.json({ history });
+  } catch (err) {
+    console.error("Error fetching history:", err);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
 // Root
 app.get("/", (req, res) => {
   res.send("✅ Server is running successfully!");
