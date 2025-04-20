@@ -5,16 +5,20 @@ function updateLoginStatus() {
         const statusElement = document.getElementById("status");
         const signInButton = document.getElementById("googleSignIn");
         const logoutButton = document.getElementById("logoutButton");
+        const tabProductivity = document.getElementById("tab-productivity");
+
 
         if (result.token) {
             console.log("Token found:", result.token);
-            statusElement.innerText = "✅ Login successful!";
+            // statusElement.innerText = "✅ Login successful!";
             signInButton.style.display = "none";
+            tabProductivity.style.display = "flex";
             logoutButton.style.display = "flex";
         } else {
             console.log("No token found");
-            statusElement.innerText = "❌ Not logged in.";
+            // statusElement.innerText = "❌ Not logged in.";
             signInButton.style.display = "flex";
+            tabProductivity.style.display = "none";
             logoutButton.style.display = "none";
         }
     });
@@ -73,29 +77,43 @@ chrome.runtime.onMessage.addListener((message) => {
 
 
 // Listen for messages from the background script
-// Listen for messages from the background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === "TAB_ANALYZED") {
-      const { url, title, classification } = message.data;
-  
-      // Update the popup UI with formatted content
-              //   <p style="margin: 5px 0;"><strong>URL:</strong> <a href="${url}" target="_blank">${url}</a></p>
+        const { url, title, classification } = message.data;
 
-      const tabProductivityElement = document.getElementById("tab-productivity");
-      tabProductivityElement.innerHTML = `
-        <div style="margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
-          <h3 style="margin: 0; font-size: 16px;">Tab Analysis</h3>
-          <p style="margin: 5px 0;"><strong>Title:</strong> ${title}</p>
-          <p style="margin: 5px 0;"><strong>Classification:</strong> 
-            <span style="color: ${
-              classification === "productive"
-                ? "green"
-                : classification === "unproductive"
-                ? "red"
-                : "orange"
-            };">${classification}</span>
-          </p>
-        </div>
-      `;
+        // Normalize the classification value
+        const normalizedClassification = classification.trim().toLowerCase();
+
+        // Log the normalized classification for debugging
+        console.log("Normalized classification:", normalizedClassification);
+
+        // Update the popup UI with formatted content
+        const tabProductivityElement = document.getElementById("tab-productivity");
+        tabProductivityElement.innerHTML = `
+            <div style="padding: 20px; border: 2px solid ${
+                normalizedClassification === "productive"
+                    ? "green"
+                    : normalizedClassification === "unproductive"
+                    ? "red"
+                    : "orange"
+            }; border-radius: 10px; background-color: ${
+                normalizedClassification === "productive"
+                    ? "#e6ffe6"
+                    : normalizedClassification === "unproductive"
+                    ? "#ffe6e6"
+                    : "#fff5e6"
+            }; text-align: center;">
+                <h2 style="margin: 0; font-size: 24px; font-weight: bold;">
+                    ${
+                        normalizedClassification === "productive"
+                            ? "✅ Productive"
+                            : normalizedClassification === "unproductive"
+                            ? "❌ Unproductive"
+                            : "➖ Neutral"
+                    }
+                </h2>
+                <p style="margin: 10px 0; font-size: 18px;"><strong>Title:</strong> ${title}</p>
+            </div>
+        `;
     }
-  });
+});

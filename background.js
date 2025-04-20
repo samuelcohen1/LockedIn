@@ -47,8 +47,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         chrome.windows.create({
           url: "popup.html",
           type: "popup",
-          width: 400,
-          height: 600,
+          width: 370,
+          height: 400,
         });
       }
     });

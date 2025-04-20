@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "My First Chrome Extension",
+  "name": "LockedIn",
   "version": "1.0",
-  "description": "A basic Chrome extension",
+  "description": "Block unproductive tabs with AI to stay focused",
   "action": {
       "default_popup": "popup.html",
-      "default_icon": "icon.png"
+      "default_icon": "locked-padlock.png"
   },
   "permissions": [
       "identity",
