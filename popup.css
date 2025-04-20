@@ -18,17 +18,19 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    padding: 10px;
+    width: calc(100% - 20px); /* Reduce width slightly for left margin */
+    padding: 12px;
+    margin: 12px auto 0 auto; /* Center horizontally and add top margin */
+    margin-left: 10px; /* Add left margin */
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
     border: 1px solid #dadce0;
-    border-radius: 4px;
     background-color: white;
     color: #3c4043;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 #googleSignIn:before {
@@ -45,27 +47,48 @@ h1 {
     background-color: #f8f9fa;
 }
 
-#logoutButton {
+#logoutButton,
+#historyButton {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: calc(100% - 20px); /* Reduce width slightly for left margin */
     padding: 12px;
-    border: 1px solid #dc3545;
-    border-radius: 4px;
+    margin: 12px auto 0 auto; /* Center horizontally and add top margin */
+    margin-left: 10px; /* Add left margin */
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+/* Specific styling for the Sign Out button */
+#logoutButton {
+    border: 1.5px solid #dc3545;
     background-color: white;
     color: #dc3545;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    margin-top: 8px;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.1);
 }
 
 #logoutButton:hover {
     background-color: #dc3545;
     color: white;
+}
+
+/* Specific styling for the History button */
+#historyButton {
+    border: 1.5px solid #1a73e8;
+    background: linear-gradient(90deg, #e3f0ff 0%, #f8faff 100%);
+    color: #1a73e8;
+    box-shadow: 0 2px 8px rgba(26, 115, 232, 0.06);
+}
+
+#historyButton:hover {
+    background: linear-gradient(90deg, #d2e3fc 0%, #e8f0fe 100%);
+    color: #174ea6;
+    border-color: #174ea6;
+    box-shadow: 0 4px 16px rgba(26, 115, 232, 0.1);
 }
 
 #status {
@@ -79,6 +102,9 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    justify-content: center;
     /* gap: 16px; */
 } 
 
@@ -254,37 +280,6 @@ h1 {
     }
 }
 
-#historyButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 12px;
-    border: 1.5px solid #1a73e8;
-    border-radius: 6px;
-    background: linear-gradient(90deg, #e3f0ff 0%, #f8faff 100%);
-    color: #1a73e8;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    box-shadow: 0 2px 8px rgba(26,115,232,0.06);
-    margin-top: 12px;
-    gap: 8px;
-}
-#historyButton:hover {
-    background: linear-gradient(90deg, #d2e3fc 0%, #e8f0fe 100%);
-    color: #174ea6;
-    border-color: #174ea6;
-    box-shadow: 0 4px 16px rgba(26,115,232,0.10);
-}
-#historyButton .icon {
-    width: 20px;
-    height: 20px;
-    display: inline-block;
-    background: url('data:image/svg+xml;utf8,<svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="20" rx="10" fill="%231a73e8"/><path d="M10 6v4l3 1.5" stroke="%23fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="10" r="6.25" stroke="%23fff" stroke-width="1.5"/></svg>') center/cover no-repeat;
-    margin-right: 6px;
-}
 @media (max-width: 400px) {
     body, .container {
         width: 98vw;
