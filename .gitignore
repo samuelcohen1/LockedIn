@@ -2,6 +2,7 @@
 node_modules/
 
 # Environment variables
+.env
 server/.env
 
 # Logs
@@ -18,3 +19,7 @@ Thumbs.db
 # IDE specific files
 .vscode/
 .idea/
+
+# Build files
+dist/
+build/

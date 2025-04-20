@@ -93,24 +93,69 @@ passport.deserializeUser(async (id, done) => {
 });
 
 // Google OAuth Routes
-app.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-app.get(
-  "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/" }),
-  (req, res) => {
-    const token = jwt.sign(
-      { id: req.user.id, username: req.user.username },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
 
-    // Redirect to frontend with token
-    res.redirect(`http://localhost:5173/auth-success?token=${token}`);
-  }
+app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/' }),
+    (req, res) => {
+        const token = jwt.sign(
+            { id: req.user.id, username: req.user.username },
+            process.env.JWT_SECRET || 'default_secret',
+            { expiresIn: '1h' }
+        );
+
+        // Send an HTML page that will safely communicate with the extension
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Authentication Success</title>
+                <style>
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        height: 100vh;
+                        margin: 0;
+                        background-color: #f8f9fa;
+                    }
+                    .message {
+                        background: white;
+                        padding: 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        text-align: center;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="message">
+                    <h2>Authentication Successful!</h2>
+                    <p>You can close this window and return to the extension.</p>
+                </div>
+                <script>
+                    // Send token to extension
+                    const token = "${token}";
+                    chrome.runtime.sendMessage("${process.env.EXTENSION_ID}", { token }, 
+                        function(response) {
+                            if (chrome.runtime.lastError) {
+                                console.log("Error sending message:", chrome.runtime.lastError);
+                            } else {
+                                console.log("Message sent successfully");
+                            }
+                            // Close the window after a short delay
+                            setTimeout(() => window.close(), 2000);
+                        }
+                    );
+                </script>
+            </body>
+            </html>
+        `);
+    }
+
 );
 
 // ✅ FIXED: Correct Gemini API Proxy
