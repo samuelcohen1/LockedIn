@@ -59,6 +59,12 @@ document.getElementById("googleSignIn").addEventListener("click", () => {
 // Event Listener for Logout
 document.getElementById("logoutButton").addEventListener("click", handleLogout);
 
+// Event Listener for History Button
+const historyButton = document.getElementById("historyButton");
+historyButton.addEventListener("click", () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL("history.html") });
+});
+
 // Check login status when popup opens
 console.log("Popup opened, checking initial status");
 document.addEventListener('DOMContentLoaded', updateLoginStatus);
@@ -71,8 +77,6 @@ chrome.runtime.onMessage.addListener((message) => {
     }
 });
 
-
-// Listen for messages from the background script
 // Listen for messages from the background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === "TAB_ANALYZED") {

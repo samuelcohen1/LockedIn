@@ -1,9 +1,12 @@
 body {
-    width: 300px;
-    padding: 20px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    background: #f8fafc;
     margin: 0;
-    background-color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 h1 {
@@ -76,8 +79,102 @@ h1 {
 }
 
 .container {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(26,115,232,0.08);
+    padding: 32px 36px;
+    margin: 48px auto;
+    max-width: 600px;
+    min-width: 350px;
+    width: 80vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 16px;
-} 
+    justify-content: center;
+}
+
+/* --- History Page Enhancements --- */
+.history-list {
+    margin-top: 24px;
+    padding: 0;
+    list-style: none;
+    max-height: 350px;
+    overflow-y: auto;
+}
+.history-list li {
+    background: #f4f8fb;
+    border-radius: 6px;
+    margin-bottom: 14px;
+    padding: 12px 16px;
+    box-shadow: 0 2px 8px rgba(26,115,232,0.06);
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.history-list li:hover {
+    background: #e8f0fe;
+}
+.history-list a {
+    color: #1a73e8;
+    font-size: 15px;
+    word-break: break-all;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.history-list a:hover {
+    color: #174ea6;
+    text-decoration: underline;
+}
+.history-list .icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    background: url('data:image/svg+xml;utf8,<svg fill="%231a73e8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.59 13.41L9.17 12l4.58-4.59L15 8l-6 6z"/></svg>') center/contain no-repeat;
+    display: inline-block;
+}
+
+.prod-label {
+    margin-left: 12px;
+    padding: 2px 10px 2px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+    display: inline-block;
+    box-shadow: 0 1px 3px rgba(26,115,232,0.07);
+    transition: background 0.2s, color 0.2s;
+}
+.prod-label.productive {
+    background: #e6f4ea;
+    color: #137333;
+    border: 1px solid #34a853;
+}
+.prod-label.unproductive {
+    background: #fce8e6;
+    color: #a50e0e;
+    border: 1px solid #ea4335;
+}
+.prod-label.neutral {
+    background: #f1f3f4;
+    color: #444;
+    border: 1px solid #dadce0;
+}
+
+/* Responsive for history page */
+@media (max-width: 400px) {
+    .history-list li {
+        padding: 10px 8px;
+    }
+}
+
+@media (max-width: 700px) {
+    .container {
+        max-width: 98vw;
+        min-width: unset;
+        padding: 16px 4vw;
+    }
+}

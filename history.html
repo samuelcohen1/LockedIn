@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tab History</title>
+    <link rel="stylesheet" href="popup.css">
+    <style>
+      .history-list {
+        margin-top: 20px;
+        padding-left: 0;
+        list-style: none;
+      }
+      .history-list li {
+        margin-bottom: 10px;
+        word-break: break-all;
+      }
+      .history-list a {
+        color: #1a73e8;
+        text-decoration: underline;
+      }
+    </style>
+    <script defer src="history.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Tab History</h1>
+        <ul id="historyList" class="history-list"></ul>
+    </div>
+</body>
+</html>
