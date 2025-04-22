@@ -9,14 +9,12 @@ function updateLoginStatus() {
 
         if (result.token) {
             console.log("Token found:", result.token);
-            // statusElement.innerText = "✅ Login successful!";
             signInButton.style.display = "none";
             tabProductivity.style.display = "flex";
             logoutButton.style.display = "flex";
             historyButton.style.display = "flex";
         } else {
             console.log("No token found");
-            // statusElement.innerText = "❌ Not logged in.";
             signInButton.style.display = "flex";
             tabProductivity.style.display = "none";
             logoutButton.style.display = "none";
@@ -114,10 +112,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 <h2 style="margin: 0; font-size: 24px; font-weight: bold;">
                     ${
                         normalizedClassification === "productive"
-                            ? "✅ Productive"
+                            ? "Productive"
                             : normalizedClassification === "unproductive"
-                            ? "❌ Unproductive"
-                            : "➖ Neutral"
+                            ? "Unproductive"
+                            : "Neutral"
                     }
                 </h2>
                 <p style="margin: 10px 0; font-size: 18px;"><strong>Title:</strong> ${title}</p>

@@ -11,20 +11,20 @@ module.exports = function buildPrompt({ title, url }) {
   
   Examples:
   
-  ✅ Productive:
+  Productive:
   - https://khanacademy.org — free educational platform
   - https://docs.google.com — document creation for assignments
   - https://stackoverflow.com — reference for coding help
   - https://linkedin.com — job browsing
   - https://canvas.com - school website
   
-  ❌ Unproductive:
+  Unproductive:
   - https://youtube.com/watch?v=cat-video — entertainment
   - https://tiktok.com — short-form entertainment
   - https://reddit.com/r/memes — meme content
   - https://amazon.com — shopping
   
-  🟡 Neutral:
+  Neutral:
   - https://discord.com — depends on use
   - https://gmail.com - could go either way
   

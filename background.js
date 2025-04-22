@@ -1,13 +1,13 @@
-// Listen for messages from the server (e.g., token after OAuth)
+// Listen for messages from the server
 chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
   if (request.token) {
     // Store the token
     chrome.storage.local.set({ token: request.token }, () => {
-      console.log("✅ Token saved successfully in storage.");
+      console.log("Token saved successfully in storage.");
 
       // Confirm token was saved
       chrome.storage.local.get("token", (result) => {
-        console.log("🧪 Retrieved token after save:", result.token);
+        console.log("Retrieved token after save:", result.token);
       });
 
       // Notify popup or other parts of the extension
@@ -57,11 +57,11 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       const token = data.token;
 
       if (!token) {
-        console.warn("❗ No token found in storage. Tab not sent.");
+        console.warn("No token found in storage. Tab not sent.");
         return;
       }
 
-      console.log("📦 Sending tab data with token:", token);
+      console.log("Sending tab data with token:", token);
 
       // Send the tab data to the backend
     fetch("http://localhost:3000/api/analyze-tab", {
@@ -77,7 +77,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log("✅ Gemini classification:", data.classification);
+          console.log("Gemini classification:", data.classification);
   
         // Send the tab info and classification to the popup
         chrome.runtime.sendMessage({
@@ -90,7 +90,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         });
       })
         .catch((err) => {
-          console.error("❌ Error sending tab data:", err);
+          console.error("Error sending tab data:", err);
         });
     });
   }

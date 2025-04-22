@@ -31,8 +31,8 @@ app.use(passport.session());
 // MongoDB Connection
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ Connected to MongoDB Atlas"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+  .then(() => console.log("Connected to MongoDB Atlas"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // MongoDB User Schema
 const userSchema = new mongoose.Schema({
@@ -91,7 +91,7 @@ passport.use(
         }
         return done(null, user);
       } catch (error) {
-        console.error("❌ Error saving user:", error);
+        console.error("Error saving user:", error);
         return done(error, null);
       }
     }
@@ -192,8 +192,7 @@ app.post("/api/analyze-tab", authenticateJWT, async (req, res) => {
     return res.status(400).json({ error: "Missing URL or title." });
   }
 
-  // const prompt = `A student is trying to stay productive while studying. They visit a website titled "${title}" at ${url}.
-  // Is this website productive, neutral, or unproductive? Respond with only one word and no new lines.`;
+
   const prompt = buildPrompt({ title: title, url: url });
 
   try {
@@ -245,9 +244,9 @@ app.get("/api/history", authenticateJWT, async (req, res) => {
 
 // Root
 app.get("/", (req, res) => {
-  res.send("✅ Server is running successfully!");
+  res.send("Server is running successfully!");
 });
 
 app.listen(PORT, () =>
-  console.log(`🚀 Server running on http://localhost:${PORT}`)
+  console.log(`Server running on http://localhost:${PORT}`)
 );
